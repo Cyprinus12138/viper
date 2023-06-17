@@ -12,8 +12,10 @@ func newWatcher() (*watcher, error) {
 }
 
 type Event struct {
-	new interface{}
-	old interface{}
+	name   string
+	new    interface{}
+	old    interface{}
+	reason string
 }
 
 func (s *Event) New() interface{} {
