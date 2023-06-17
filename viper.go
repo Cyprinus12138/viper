@@ -524,8 +524,10 @@ func (v *Viper) updateRegisteredConfig(newConfig map[string]interface{}) (result
 			newConfig[key] = oldValue
 			if config.OnUpdateFailed != nil {
 				config.OnUpdateFailed(&Event{
-					old: oldValue,
-					new: nil,
+					name:   v.name,
+					old:    oldValue,
+					new:    nil,
+					reason: "not found",
 				})
 			}
 			continue
@@ -539,8 +541,10 @@ func (v *Viper) updateRegisteredConfig(newConfig map[string]interface{}) (result
 				newConfig[key] = oldValue
 				if config.OnUpdateFailed != nil {
 					config.OnUpdateFailed(&Event{
-						old: oldValue,
-						new: nil,
+						name:   v.name,
+						old:    oldValue,
+						new:    nil,
+						reason: err.Error(),
 					})
 				}
 				continue
@@ -554,8 +558,10 @@ func (v *Viper) updateRegisteredConfig(newConfig map[string]interface{}) (result
 			newConfig[key] = oldValue
 			if config.OnUpdateFailed != nil {
 				config.OnUpdateFailed(&Event{
-					old: oldValue,
-					new: nil,
+					name:   v.name,
+					old:    oldValue,
+					new:    nil,
+					reason: "validate failed",
 				})
 			}
 			continue
@@ -565,8 +571,9 @@ func (v *Viper) updateRegisteredConfig(newConfig map[string]interface{}) (result
 		result[key] = config.Schema
 		if config.OnUpdate != nil {
 			config.OnUpdate(&Event{
-				new: config.Schema,
-				old: oldValue,
+				name: v.name,
+				new:  config.Schema,
+				old:  oldValue,
 			})
 		}
 	}
