@@ -25,3 +25,11 @@ func (s *Event) New() interface{} {
 func (s *Event) Old() interface{} {
 	return s.old
 }
+
+func (s *Event) Source() string {
+	return s.name
+}
+
+func (s *Event) Reason() string {
+	return s.reason
+}
