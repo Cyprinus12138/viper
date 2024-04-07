@@ -542,8 +542,8 @@ func (v *Viper) updateRegisteredConfig(newConfig map[string]interface{}, strict 
 			err := js.Unmarshal(newValueJson, config.Schema)
 			if err != nil {
 				newConfig[key] = oldValue
+				err = errors.New(fmt.Sprintf("%s is with a invalid type", key))
 				if config.OnUpdateFailed != nil {
-					err = errors.New(fmt.Sprintf("%s is with a invalid type", key))
 					config.OnUpdateFailed(&Event{
 						name:   v.name,
 						old:    oldValue,
@@ -560,8 +560,8 @@ func (v *Viper) updateRegisteredConfig(newConfig map[string]interface{}, strict 
 		// Validation
 		if config.Validator != nil && !config.Validator(config.Schema) {
 			newConfig[key] = oldValue
+			err = errors.New(fmt.Sprintf("%s is with a invalid type", key))
 			if config.OnUpdateFailed != nil {
-				err = errors.New(fmt.Sprintf("%s validation failed", key))
 				config.OnUpdateFailed(&Event{
 					name:   v.name,
 					old:    oldValue,
